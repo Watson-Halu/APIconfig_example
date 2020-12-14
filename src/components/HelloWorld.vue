@@ -103,11 +103,37 @@
 </template>
 
 <script>
+//引入api.js 可以確保你網站的來源都是同一個進入點
+import { apiUserInfo } from '../api/api'
+
 export default {
   name: "HelloWorld",
   props: {
     msg: String
-  }
+  },
+  mounted(){
+    this.getApiUserInfo()
+    // ***********************************************************
+    // ** YOU CAN ALSO PLUG THE API METHOD WITHIN MOUNTED BLOCK ** 
+    // ***********************************************************
+    // apiUserInfo()
+    // .then(response => {
+    //     console.log(response)
+    // })
+    // .catch(err => {
+    //     console.log(err)
+    // })
+  },
+  methods: {
+    getApiUserInfo(){
+      apiUserInfo().then(response => {
+        console.log(response)
+    })
+    .catch(err => {
+        console.log(err)
+    })
+    }
+  },
 };
 </script>
 
