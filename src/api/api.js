@@ -1,12 +1,11 @@
-import axios from 'axios'
+import axios from "axios";
 
 const userRequest = axios.create({
-    baseURL: 'https://randomuser.me/api/'
-})
+  baseURL: "https://randomuser.me/api/"
+});
 
 // USER
 // GET
-export const apiUserInfo = () => userRequest.get('/')
+export const apiUserInfo = () => userRequest.get("/");
 //POST
-export const apiUserLogin = data => userRequest.post('/signIn', data);
-
+export const apiUserLogin = data => userRequest.post("/signIn", data);
