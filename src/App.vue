@@ -1,9 +1,7 @@
 <template>
-  <v-app>
+  <!-- <v-app>
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
-        <router-link to="/">Home</router-link>
-        <router-link to="/about">About</router-link>
         <v-img
           alt="Vuetify Logo"
           class="shrink mr-2"
@@ -34,25 +32,53 @@
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
+    <v-navigation-drawer v-model="siderbar" app>
+
+    </v-navigation-drawer>
 
     <v-main>
+      <v-btn to="/">home</v-btn>
+      <v-btn to="/about">about</v-btn>
       <HelloWorld />
+      <router-view></router-view>
     </v-main>
+  </v-app> -->
+
+
+  <v-app>
+    <v-navigation-drawer app>
+      <!-- -->
+    </v-navigation-drawer>
+
+    <v-app-bar app>
+      <!-- -->
+    </v-app-bar><!-- 根据应用程序组件调整内容大小 --><v-main><!-- 为应用程序提供正确的插槽 --><v-container fluid><!-- 如果使用vue-router --><router-view></router-view>
+      </v-container>
+    </v-main>
+
+    <v-footer app>
+      <!-- -->
+    </v-footer>
   </v-app>
+
+
+
+
+
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+// import HelloWorld from "./components/HelloWorld";
 
 export default {
   name: "App",
 
-  components: {
-    HelloWorld
-  },
+  // components: {
+  //   HelloWorld
+  // },
 
   data: () => ({
     //
-  })
+  }),
 };
 </script>

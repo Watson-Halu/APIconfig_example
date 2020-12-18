@@ -1,6 +1,39 @@
 <template>
   <v-container>
     <v-row class="text-center">
+      <v-col clos="12">
+        <div class="text-center">
+          <v-switch
+            v-model="closeOnContentClick"
+            label="Close on content click"
+          ></v-switch>
+          <v-menu
+            top
+            :close-on-content-click="closeOnContentClick"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="pink"
+                dark
+                v-bind="attrs"
+                v-on="on"
+                class="try"
+              >
+                Dropdown
+              </v-btn>
+            </template>
+
+            <v-list>
+              <v-list-item
+                v-for="(item, index) in items"
+                :key="index"
+              >
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+      </v-col>
       <v-col cols="12">
         <v-img
           :src="require('../assets/logo.svg')"
@@ -11,7 +44,7 @@
         <v-icon>far fa-tired</v-icon>
       </v-col>
 
-      <v-col class="mb-4">
+      <v-col class="mb-4" cols="12">
         <h1 class="display-2 font-weight-bold mb-3">
           Welcome to Vuetify
         </h1>
@@ -25,7 +58,7 @@
         </p>
       </v-col>
 
-      <v-col class="mb-5" cols="12">
+      <v-col class="mb-5" cols="4">
         <h2 class="headline font-weight-bold mb-3">
           What's next?
         </h2>
@@ -43,7 +76,7 @@
         </v-row>
       </v-col>
 
-      <v-col class="mb-5" cols="12">
+      <v-col class="mb-5" cols="4">
         <h2 class="headline font-weight-bold mb-3">
           Important Links
         </h2>
@@ -61,7 +94,7 @@
         </v-row>
       </v-col>
 
-      <v-col class="mb-5" cols="12">
+      <v-col class="mb-5" cols="4">
         <h2 class="headline font-weight-bold mb-3">
           Ecosystem
         </h2>
@@ -79,14 +112,104 @@
         </v-row>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
+        >
+          <v-text-field
+            v-model="name"
+            :counter="10"
+            :rules="nameRules"
+            label="Name"
+            required
+          ></v-text-field>
+
+          <v-text-field
+            v-model="email"
+            :rules="emailRules"
+            label="E-mail"
+            required
+          ></v-text-field>
+
+          <v-select
+            v-model="select"
+            :items="items"
+            :rules="[v => !!v || 'Item is required']"
+            label="Item"
+            required
+          ></v-select>
+
+          <v-checkbox
+            v-model="checkbox"
+            :rules="[v => !!v || 'You must agree to continue!']"
+            label="Do you agree?"
+            required
+          ></v-checkbox>
+
+          <v-btn
+            :disabled="!valid"
+            color="success"
+            class="mr-4"
+            @click="validate"
+          >
+            Validate
+          </v-btn>
+
+          <v-btn
+            color="error"
+            class="mr-4"
+            @click="reset"
+          >
+            Reset Form
+          </v-btn>
+
+          <v-btn
+            color="warning"
+            @click="resetValidation"
+          >
+            Reset Validation
+          </v-btn>
+        </v-form>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
+import { apiUserInfo } from '../api/api'
 export default {
   name: "HelloWorld",
 
   data: () => ({
+    valid: true,
+    name: '',
+    nameRules: [
+      v => !!v || 'Name is required',
+      v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+    ],
+    email: '',
+    emailRules: [
+      v => !!v || 'E-mail is required',
+      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+    ],
+    select: null,
+    // items: [
+    //   'Item 1',
+    //   'Item 2',
+    //   'Item 3',
+    //   'Item 4',
+    // ],
+    checkbox: false,
+    items: [
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me 2' },
+      ],
+    closeOnContentClick: true,
     ecosystem: [
       {
         text: "vuetify-loader",
@@ -137,6 +260,32 @@ export default {
         href: "https://vuetifyjs.com/getting-started/frequently-asked-questions"
       }
     ]
-  })
+  }),
+  mounted () {
+    this.getAPIresult();
+  },
+  methods: {
+    getAPIresult(){
+      apiUserInfo().then( res => {
+        console.log(res)
+      }
+      )
+    },
+    validate () {
+        this.$refs.form.validate()
+      },
+      reset () {
+        this.$refs.form.reset()
+      },
+      resetValidation () {
+        this.$refs.form.resetValidation()
+      },
+  },
 };
 </script>
+<style lang="scss" scoped>
+::v-deep .try{
+  color: cadetblue;
+  background-color:chartreuse!important;
+}
+</style>
